@@ -5,12 +5,11 @@ import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const IndexScreen = ({ navigation }) => {
-	const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+	const { state, deleteBlogPost } = useContext(Context);
 
+	//<Button title="Add Post" onPress={addBlogPost} />
 	return (
-		<View>
-			<Text>Index Screen</Text>
-			<Button title="Add Post" onPress={addBlogPost} />
+		<View style={styles.view}>
 			<FlatList
 				data={state}
 				keyExtractor={(blogPost) => `${blogPost.id}`}
@@ -23,7 +22,7 @@ const IndexScreen = ({ navigation }) => {
 								})
 							}
 						>
-							<View style={styles.view}>
+							<View style={styles.listView}>
 								<Text style={styles.title}>
 									{item.title} - {item.id}
 								</Text>
@@ -41,20 +40,39 @@ const IndexScreen = ({ navigation }) => {
 	);
 };
 
+IndexScreen.navigationOptions = ({ navigation }) => {
+	return {
+		headerRight: () => (
+			<TouchableOpacity onPress={() => navigation.navigate("CreatePost")}>
+				<Feather style={styles.plusIcon} name="plus" />
+			</TouchableOpacity>
+		),
+	};
+};
+
 const styles = StyleSheet.create({
-	view: {
+	listView: {
 		flexDirection: "row",
 		paddingVertical: 20,
 		paddingHorizontal: 10,
 		justifyContent: "space-between",
 		borderTopWidth: 1,
-		borderEndWidth: 3,
 	},
 	title: {
 		fontSize: 18,
 	},
 	icon: {
 		fontSize: 24,
+	},
+
+	view: {
+		flex: 1,
+		backgroundColor: "#fff",
+	},
+
+	plusIcon: {
+		fontSize: 30,
+		paddingRight: 5,
 	},
 });
 
